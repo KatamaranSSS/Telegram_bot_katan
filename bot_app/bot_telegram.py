@@ -1,0 +1,18 @@
+from aiogram.utils import executor
+from create_bot import dp
+from data_base import sqlite_db
+from handlers import client, admin, other
+
+
+async def on_startup(_):
+    print('Бот вышел в онлайн')
+    sqlite_db.sql_start()
+
+
+client.register_handlers_client(dp)
+admin.register_handlers_admin(dp)
+other.register_handlers_other(dp)
+# Так как хэндлер из other пустой он должен стоять посленим
+
+
+executor.start_polling(dp, skip_updates=True, on_startup=on_startup)
